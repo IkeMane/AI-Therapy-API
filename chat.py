@@ -93,9 +93,9 @@ def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
     while True:
         # get user input
         print(conversation)
-        text = user_messages[-1]
-        print(text)
-        save_file('chat_logs/chat_%s_user.txt' % time(), text)
+        #text = user_messages[-1]
+        #print(text)
+        #save_file('chat_logs/chat_%s_user.txt' % time(), text)
 
 
         # update main scratchpad
