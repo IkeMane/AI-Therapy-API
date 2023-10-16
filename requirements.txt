@@ -5,6 +5,4 @@ flask-cors
 pyyaml
 gunicorn
 numpy
-PyPi
-onnxruntime
-numpy
+onnxruntime==1.7.0
