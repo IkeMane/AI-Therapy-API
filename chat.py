@@ -49,10 +49,10 @@ def chatbot(messages, model="gpt-4", temperature=0):
             response = openai.ChatCompletion.create(model=model, messages=messages, temperature=temperature)
             text = response['choices'][0]['message']['content']
             
-            ###    trim message object
-            debug_object = [i['content'] for i in messages]
-            debug_object.append(text)
-            save_yaml('api_logs/convo_%s.yaml' % time(), debug_object)
+            # ###    trim message object
+            # debug_object = [i['content'] for i in messages]
+            # debug_object.append(text)
+            # save_yaml('api_logs/convo_%s.yaml' % time(), debug_object)
             if response['usage']['total_tokens'] >= 7000:
                 a = messages.pop(1)
             
