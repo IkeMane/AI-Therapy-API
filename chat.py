@@ -100,7 +100,6 @@ def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
             all_messages.pop(0)
         main_scratchpad = '\n\n'.join(all_messages).strip()
 
-
         
         # search KB, update default system
         default_system = open_file('system_default.txt').replace('<<PROFILE>>', current_profile).replace('<<KB>>', kb)
