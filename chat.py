@@ -112,7 +112,7 @@ def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
 
         # generate a response
         response = chatbot(conversation)
-        save_file('chat_logs/chat_%s_chatbot.txt' % time(), response)
+        #save_file('chat_logs/chat_%s_chatbot.txt' % time(), response)
         conversation.append({'role': 'assistant', 'content': response})
         all_messages.append('CHATBOT: %s' % response)
         print('\n\nCHATBOT: %s' % response)
