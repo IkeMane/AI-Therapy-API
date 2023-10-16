@@ -17,14 +17,29 @@ def save_file(filepath, content):
 def open_file(filepath):
     with open(filepath, 'r', encoding='utf-8', errors='ignore') as infile:
         return infile.read()
-
+    
+    
 def format_messages(conversations):
+    # Check if conversations is a list
+    if not isinstance(conversations, list):
+        raise ValueError("Expected a list of conversations")
+
     all_messages = []
     for conversation in conversations:
+        # Check if each 'conversation' is a dictionary
+        if not isinstance(conversation, dict):
+            raise ValueError("Each conversation should be a dictionary")
+            
         role = conversation.get("role", "").upper()
         content = conversation.get("content", "")
+        
+        # Additional check for role and content types, if needed
+        if not isinstance(role, str) or not isinstance(content, str):
+            raise ValueError("Role and Content should be of type str")
+
         message = f"{role}: {content}"
         all_messages.append(message)
+
     return all_messages
 
 
