@@ -74,6 +74,7 @@ def chatbot(messages, model="gpt-4", temperature=0):
 
 
 def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
+    print(type(conversation))
     all_messages = format_messages(conversation)
     all_messages = keep_recent_items(all_messages,5)
     user_messages= extract_user_messages(conversation)

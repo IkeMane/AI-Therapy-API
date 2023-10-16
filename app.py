@@ -15,6 +15,8 @@ def get_response():
     #user_id = data.get('user_id')
     api_key = data.get('api_key')
     conversation = data.get('conversation', [])
+    print(type(conversation))
+    print(conversation)
     current_profile = data.get('current_profile')
     kb = data.get('kb')
 
