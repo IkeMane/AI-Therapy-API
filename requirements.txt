@@ -3,3 +3,4 @@ chromadb
 flask
 flask-cors
 pyyaml
+gunicorn
