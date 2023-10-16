@@ -5,6 +5,3 @@ flask-cors
 pyyaml
 gunicorn
 numpy
-pulsar-client
-onnxruntime
-chromadb
