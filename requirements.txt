@@ -1,8 +1,5 @@
 openai
-chromadb
 flask
 flask-cors
 pyyaml
 gunicorn
-numpy
-onnxruntime==1.16.0

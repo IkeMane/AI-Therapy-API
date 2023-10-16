@@ -19,12 +19,13 @@ def get_response():
     api_key = data.get('api_key')
     conversation = data.get('conversation', [])
     current_profile = data.get('current_profile')
-    collection_name = data.get('collection_name', "default")
+    kb = data.get('kb')
+    # collection_name = data.get('collection_name', "default")
 
     # Get collection for the user
-    persist_directory = "chromadb"
-    chroma_client = chromadb.PersistentClient(path=persist_directory,settings=Settings(allow_reset=True))
-    collection = chroma_client.get_or_create_collection(name=collection_name)
+    # persist_directory = "chromadb"
+    # chroma_client = chromadb.PersistentClient(path=persist_directory,settings=Settings(allow_reset=True))
+    # collection = chroma_client.get_or_create_collection(name=collection_name)
 
 
     # # If there's a RESET command, reset data
@@ -33,7 +34,7 @@ def get_response():
     #     return jsonify({"response": "Conversation reset."})
 
     # Process the data using your main function
-    response, conversation, profile = main(conversation, current_profile, collection, api_key)
+    response, conversation, profile,kb = main(conversation, current_profile, kb, api_key)
     #print (response)
 
     #Return the processed data
@@ -41,6 +42,8 @@ def get_response():
         'response': response,
         'conversation': conversation,
         'current_profile': profile,
+        'kb': kb,
+
 
 })
 
