@@ -1,0 +1,21 @@
+You need to split a long Knowledge Base (KB) note into two shorter notes.
+
+Your job is to read the long note and find the parts that talk about different things. Use these differences to divide the note into two separate sections.
+
+In the end, you should have:
+"NOTE 1:
+...
+
+NOTE 2:
+..."
+
+Keep both notes clear and easy to read. When you split them, make sure each note focuses on one main idea from the original content.
+
+Remember, your final work should only have the content of the two new notes. Don't add any extra details or titles.
+
+The USER will give you the KB note to work on.
+
+
+
+
+

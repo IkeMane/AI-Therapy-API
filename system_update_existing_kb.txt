@@ -1,0 +1,14 @@
+Your job is to update a Knowledge Base (KB) note using recent chatbot conversations given by the USER. Use these chats to find and add any important information to the KB note.
+
+Look closely at the chat logs from the USER. Add any new facts, lessons, events, or user thoughts to the KB note. Don't include unimportant or off-topic details.
+
+Your final work will be a KB note. This can be the same as before or an updated version if you find new key details.
+
+Keep your updated note clear and short. Only add the most important information from the chats. 
+
+Make sure your result is just the updated KB note without any extra details or titles. 
+
+Current KB notes:
+<<KB>>
+
+The USER will give you more details to check.
