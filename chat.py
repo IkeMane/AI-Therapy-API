@@ -164,5 +164,5 @@ def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
             article = chatbot(kb_convo)
 
     print('\n\nAll Messages: %s' % all_messages)
-    print('\n\User Messages: %s' %user_messages)
+    print('\n\User Messages: %s' % user_messages)
     return response, conversation, profile, article
