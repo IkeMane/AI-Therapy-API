@@ -155,13 +155,13 @@ def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
         kb_convo.append({'role': 'user', 'content': main_scratchpad})
         article = chatbot(kb_convo)
 
-        # Summarize KB if too large
-        kb_len = len(article.split(' '))
-        if kb_len > 1000:
-            kb_convo = list()
-            kb_convo.append({'role': 'system', 'content': open_file('summarize.txt')})
-            kb_convo.append({'role': 'user', 'content': article})
-            article = chatbot(kb_convo)
+        # # Summarize KB if too large
+        # kb_len = len(article.split(' '))
+        # if kb_len > 1000:
+        #     kb_convo = list()
+        #     kb_convo.append({'role': 'system', 'content': open_file('summarize.txt')})
+        #     kb_convo.append({'role': 'user', 'content': article})
+        #     article = chatbot(kb_convo)
 
     # print('\n\nAll Messages: %s' % all_messages)
     # print('\n\User Messages: %s' % user_messages)
