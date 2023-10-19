@@ -89,94 +89,80 @@ def chatbot(messages, model="gpt-4", temperature=0):
 
 
 def main(conversation,current_profile,kb="No KB articles yet",api_key=0):
-    print(type(conversation))
+    #print(type(conversation))
 
     all_messages = format_messages(conversation)
     all_messages = keep_recent_items(all_messages,5)
-    print(all_messages)
+    #print('\n\nAll Messages: %s' %all_messages)
     user_messages= extract_user_messages(conversation)
     user_messages = keep_recent_items(user_messages,3)
     
 
     # instantiate chatbot
     openai.api_key = api_key
-    # conversation = list()
-    # conversation.append({'role': 'system', 'content': open_file('system_default.txt')})
-    # user_messages = list()
-    # all_messages = list()
+
+    # update main scratchpad
+    if len(all_messages) > 5:
+        all_messages.pop(0)
+    main_scratchpad = '\n\n'.join(all_messages).strip()
+
     
-    while True:
-        # get user input
-        print(conversation)
-        #text = user_messages[-1]
-        #print(text)
-        #save_file('chat_logs/chat_%s_user.txt' % time(), text)
+    # search KB, update default system
+    default_system = open_file('system_default.txt').replace('<<PROFILE>>', current_profile).replace('<<KB>>', kb)
+    conversation[0]['content'] = default_system
 
 
-        # update main scratchpad
-        if len(all_messages) > 5:
-            all_messages.pop(0)
-        main_scratchpad = '\n\n'.join(all_messages).strip()
-
-        
-        # search KB, update default system
-        default_system = open_file('system_default.txt').replace('<<PROFILE>>', current_profile).replace('<<KB>>', kb)
-        #print('SYSTEM: %s' % default_system)
-        conversation[0]['content'] = default_system
+    # generate a response
+    response = chatbot(conversation)
+    conversation.append({'role': 'assistant', 'content': response})
+    all_messages.append('CHATBOT: %s' % response)
+    print('\n\nCHATBOT: %s' % response)
 
 
-        # generate a response
-        response = chatbot(conversation)
-        #save_file('chat_logs/chat_%s_chatbot.txt' % time(), response)
-        conversation.append({'role': 'assistant', 'content': response})
-        all_messages.append('CHATBOT: %s' % response)
-        print('\n\nCHATBOT: %s' % response)
+    # update user scratchpad
+    if len(user_messages) > 3:
+        user_messages.pop(0)
+    user_scratchpad = '\n'.join(user_messages).strip()
 
 
-        # update user scratchpad
-        if len(user_messages) > 3:
-            user_messages.pop(0)
-        user_scratchpad = '\n'.join(user_messages).strip()
+    # update user profile
+    print('\n\nUpdating user profile...')
+    profile_length = len(current_profile.split(' '))
+    profile_conversation = list()
+    profile_conversation.append({'role': 'system', 'content': open_file('system_update_user_profile.txt').replace('<<UPD>>', current_profile).replace('<<WORDS>>', str(profile_length))})
+    profile_conversation.append({'role': 'user', 'content': user_scratchpad})
+    profile = chatbot(profile_conversation)
 
 
-        # update user profile
-        print('\n\nUpdating user profile...')
-        profile_length = len(current_profile.split(' '))
-        profile_conversation = list()
-        profile_conversation.append({'role': 'system', 'content': open_file('system_update_user_profile.txt').replace('<<UPD>>', current_profile).replace('<<WORDS>>', str(profile_length))})
-        profile_conversation.append({'role': 'user', 'content': user_scratchpad})
-        profile = chatbot(profile_conversation)
+    # update main scratchpad
+    if len(all_messages) > 5:
+        all_messages.pop(0)
+    main_scratchpad = '\n\n'.join(all_messages).strip()
 
 
-        # update main scratchpad
-        if len(all_messages) > 5:
-            all_messages.pop(0)
-        main_scratchpad = '\n\n'.join(all_messages).strip()
+    # Update the knowledge base
+    print('\n\nUpdating KB...')
+    if len(all_messages) == 0:
+        # yay first KB!
+        kb_convo = list()
+        kb_convo.append({'role': 'system', 'content': open_file('system_instantiate_new_kb.txt')})
+        kb_convo.append({'role': 'user', 'content': main_scratchpad})
+        article = chatbot(kb_convo)
+    else:     
+        # Expand current KB
+        kb_convo = list()
+        kb_convo.append({'role': 'system', 'content': open_file('system_update_existing_kb.txt').replace('<<KB>>', kb)})
+        kb_convo.append({'role': 'user', 'content': main_scratchpad})
+        article = chatbot(kb_convo)
 
-
-        # Update the knowledge base
-        print('\n\nUpdating KB...')
-        if len(all_messages) == 0:
-            # yay first KB!
+        # Summarize KB if too large
+        kb_len = len(article.split(' '))
+        if kb_len > 1000:
             kb_convo = list()
-            kb_convo.append({'role': 'system', 'content': open_file('system_instantiate_new_kb.txt')})
-            kb_convo.append({'role': 'user', 'content': main_scratchpad})
+            kb_convo.append({'role': 'system', 'content': open_file('summarize.txt')})
+            kb_convo.append({'role': 'user', 'content': article})
             article = chatbot(kb_convo)
-        else:     
-            # Expand current KB
-            kb_convo = list()
-            kb_convo.append({'role': 'system', 'content': open_file('system_update_existing_kb.txt').replace('<<KB>>', kb)})
-            kb_convo.append({'role': 'user', 'content': main_scratchpad})
-            article = chatbot(kb_convo)
-    
-            # Split KB if too large
-            kb_len = len(article.split(' '))
-            if kb_len > 1000:
-                kb_convo = list()
-                kb_convo.append({'role': 'system', 'content': open_file('summarize.txt')})
-                kb_convo.append({'role': 'user', 'content': article})
-                article = chatbot(kb_convo)
 
-        print(all_messages)
-        print(user_messages)
-        return response, conversation, profile, article
+    print('\n\nAll Messages: %s' % all_messages)
+    print('\n\User Messages: %s' %user_messages)
+    return response, conversation, profile, article
